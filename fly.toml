@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for go-buks on 2024-08-20T15:22:49+07:00
+# fly.toml app configuration file generated for go-buks on 2024-08-22T23:04:49+07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -11,8 +11,8 @@ primary_region = 'sin'
 [env]
   APP_ENV = 'production'
   HOST = 'go-buks.fly.dev'
+  JWT_EXP = '12h'
   PORT = '8080'
-  JWT_EXP ="12h"
 
 [http_service]
   internal_port = 8080
