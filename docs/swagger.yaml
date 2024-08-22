@@ -1,0 +1,636 @@
+definitions:
+  models.Book:
+    properties:
+      author:
+        example: Alan A. A. Donovan, Brian W. Kernighan
+        type: string
+      createdAt:
+        example: "2024-08-20T01:39:03.304451Z"
+        type: string
+      id:
+        example: 021534ff-7ae1-4ff0-a109-9198c07c4aee
+        type: string
+      publisher:
+        example: Addison-Wesley Professional
+        type: string
+      title:
+        example: The Go Programming Language
+        type: string
+      updatedAt:
+        example: "2024-08-20T01:39:03.304451Z"
+        type: string
+      year:
+        example: 2015
+        type: integer
+    type: object
+  models.CreateBook:
+    properties:
+      author:
+        example: Alan A. A. Donovan, Brian W. Kernighan
+        type: string
+      publisher:
+        example: Addison-Wesley Professional
+        type: string
+      title:
+        example: The Go Programming Language
+        type: string
+      year:
+        example: 2015
+        type: integer
+    required:
+    - author
+    - title
+    - year
+    type: object
+  models.CreateBookResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Book'
+      message:
+        default: Created Book Successfully
+        type: string
+      statusCode:
+        default: 201
+        type: integer
+    type: object
+  models.CreateBookResponseBadRequest:
+    properties:
+      message:
+        default: Validate Body Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: year
+              type: string
+            message:
+              default: Year is required and must be greater than 0 and less than 2100
+              type: string
+            value:
+              default: "2200"
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.CustomErrorResponse:
+    properties:
+      message:
+        default: Internal Server Error
+        type: string
+      reason:
+        default: Details Error
+        type: string
+      statusCode:
+        default: 500
+        type: integer
+    type: object
+  models.DeleteBookResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Book'
+      message:
+        default: Deleted Book Successfully
+        type: string
+      statusCode:
+        default: 200
+        type: integer
+    type: object
+  models.DeleteBookResponseBadRequest:
+    properties:
+      message:
+        default: Validate Params Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: id
+              type: string
+            message:
+              default: ID is not valid UUID
+              type: string
+            value:
+              default: adsfasdf
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.GetBookResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Book'
+      message:
+        default: Retrieved Book Successfully
+        type: string
+      statusCode:
+        default: 200
+        type: integer
+    type: object
+  models.GetBookResponseBadRequest:
+    properties:
+      message:
+        default: Validate Params Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: id
+              type: string
+            message:
+              default: ID is not valid UUID
+              type: string
+            value:
+              default: adsfasdf
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.Login:
+    properties:
+      email:
+        example: user1@mail.com
+        type: string
+      password:
+        example: Password123.
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.LoginResponse:
+    properties:
+      data:
+        properties:
+          token:
+            type: string
+        type: object
+      message:
+        default: Logged in Successfully
+        type: string
+      statusCode:
+        default: 200
+        type: integer
+    type: object
+  models.LoginResponseBadRequest:
+    properties:
+      message:
+        default: Validate Body Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: password
+              type: string
+            message:
+              default: Password required
+              type: string
+            value:
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.QueryBookResponse:
+    properties:
+      data:
+        properties:
+          books:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+          pagination:
+            properties:
+              limit:
+                default: 10
+                type: integer
+              page:
+                default: 1
+                type: integer
+            type: object
+        type: object
+      message:
+        default: Retrieved Books Successfully
+        type: string
+      statusCode:
+        default: 200
+        type: integer
+    type: object
+  models.QueryBookResponseBadRequest:
+    properties:
+      message:
+        default: Validate Queries Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: page
+              type: string
+            message:
+              default: Page must be greater than 0
+              type: string
+            value:
+              default: "-1"
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.Register:
+    properties:
+      email:
+        example: user1@mail.com
+        type: string
+      fullname:
+        example: User One
+        type: string
+      password:
+        example: hashed-password
+        type: string
+    required:
+    - email
+    - fullname
+    - password
+    type: object
+  models.RegisterResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
+      message:
+        default: Registered Successfully
+        type: string
+      statusCode:
+        default: 201
+        type: integer
+    type: object
+  models.RegisterResponseBadRequest:
+    properties:
+      message:
+        default: Validate Body Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: password
+              type: string
+            message:
+              default: Password required and must be a strong password
+              type: string
+            value:
+              default: password123.
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.UnauthorizedResponse:
+    properties:
+      message:
+        default: Unauthorized
+        type: string
+      reason:
+        default: Authorization Error
+        type: string
+      statusCode:
+        default: 401
+        type: integer
+    type: object
+  models.UpdateBook:
+    properties:
+      author:
+        example: Alan A. A. Donovan, Brian W. Kernighan
+        type: string
+      publisher:
+        example: Alan A. A. Donovan, Brian W. Kernighan
+        type: string
+      title:
+        example: The Go Programming Language
+        type: string
+      year:
+        example: 2015
+        type: integer
+    type: object
+  models.UpdateBookResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Book'
+      message:
+        default: Updated Book Successfully
+        type: string
+      statusCode:
+        default: 200
+        type: integer
+    type: object
+  models.UpdateBookResponseBadRequest:
+    properties:
+      message:
+        default: Validate Body Failed
+        type: string
+      reason:
+        items:
+          properties:
+            field:
+              default: year
+              type: string
+            message:
+              default: Year must be greater than 0 and less than 2100
+              type: string
+            value:
+              default: "2200"
+              type: string
+          type: object
+        type: array
+      statusCode:
+        default: 400
+        type: integer
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        example: "2024-08-20T01:39:03.304451Z"
+        type: string
+      email:
+        example: user1@mail.com
+        type: string
+      fullname:
+        example: User One
+        type: string
+      id:
+        example: 021534ff-7ae1-4ff0-a109-9198c07c4aee
+        type: string
+      updatedAt:
+        example: "2024-08-20T01:39:03.304451Z"
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.LoginResponseBadRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      summary: Login New User
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.RegisterResponseBadRequest'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      summary: Register New User
+      tags:
+      - Auth
+  /books:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Search book by title
+        in: query
+        name: search
+        type: string
+      - default: 1
+        description: Current page
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: limit items per page
+        in: query
+        minimum: 1
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.QueryBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.QueryBookResponseBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Browse Books by User ID
+      tags:
+      - Books
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: New Book Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateBook'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.CreateBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.CreateBookResponseBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a book
+      tags:
+      - Books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DeleteBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.DeleteBookResponseBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a Book
+      tags:
+      - Books
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.GetBookResponseBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a Book
+      tags:
+      - Books
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateBook'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UpdateBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.UpdateBookResponseBadRequest'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.UnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.CustomErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a Book
+      tags:
+      - Books
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and then your token
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

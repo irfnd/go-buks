@@ -1,0 +1,28 @@
+# fly.toml app configuration file generated for go-buks on 2024-08-20T15:22:49+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'go-buks'
+primary_region = 'sin'
+
+[build]
+
+[env]
+  APP_ENV = 'production'
+  HOST = 'go-buks.fly.dev'
+  PORT = '8080'
+  JWT_EXP ="12h"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'off'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

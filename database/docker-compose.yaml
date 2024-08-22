@@ -1,0 +1,11 @@
+services:
+  go-buks-db:
+    image: bitnami/postgresql:16
+    environment:
+      - POSTGRESQL_DATABASE=go-buks
+      - POSTGRESQL_USERNAME=admin
+      - POSTGRESQL_PASSWORD=Admin2024.
+    ports:
+      - 5432:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
