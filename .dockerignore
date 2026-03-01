@@ -1,5 +1,28 @@
-# flyctl launch added from .gitignore
-**\tmp
-!**\database\database.go
-**\.env
-fly.toml
+# Temporary files
+tmp/
+
+# Environment files
+.env
+.env.*
+
+# Git
+.git/
+.gitignore
+
+# Documentation (keep docs/ for Swagger)
+README.md
+LICENSE
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+*_test.go
+
+# Database docker-compose (not needed for build)
+database/docker-compose.yaml
+
+# CI/CD and deployment configs
+.github/
+.air.toml

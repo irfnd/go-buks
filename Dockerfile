@@ -1,14 +1,27 @@
-ARG GO_VERSION=1
-FROM golang:${GO_VERSION}-bookworm as builder
+# Build stage
+FROM golang:1.23-bookworm AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
+
+# Copy dependency files first for better caching
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
+
+# Copy source code and build
 COPY . .
-RUN go build -v -o /run-app .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /app/go-buks .
 
+# Runtime stage - minimal image with CA certificates
+FROM gcr.io/distroless/static-debian12:nonroot
 
-FROM debian:bookworm
+# Copy binary from builder
+COPY --from=builder /app/go-buks /go-buks
 
-COPY --from=builder /run-app /usr/local/bin/
-CMD ["run-app"]
+# Expose application port
+EXPOSE 8080
+
+# Run as non-root user (nonroot user is built into distroless)
+USER nonroot:nonroot
+
+# Run the application
+ENTRYPOINT ["/go-buks"]
