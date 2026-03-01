@@ -11,8 +11,11 @@ RUN go mod download && go mod verify
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /app/go-buks .
 
-# Runtime stage - minimal image with CA certificates
-FROM gcr.io/distroless/static-debian12:nonroot
+# Runtime stage - minimal image with curl for health checks
+FROM alpine:3.21
+
+RUN apk add --no-cache curl ca-certificates \
+    && adduser -D -u 1001 appuser
 
 # Copy binary from builder
 COPY --from=builder /app/go-buks /go-buks
@@ -20,8 +23,8 @@ COPY --from=builder /app/go-buks /go-buks
 # Expose application port
 EXPOSE 8080
 
-# Run as non-root user (nonroot user is built into distroless)
-USER nonroot:nonroot
+# Run as non-root user
+USER appuser
 
 # Run the application
 ENTRYPOINT ["/go-buks"]
