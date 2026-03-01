@@ -53,11 +53,7 @@ func main() {
 
 	// Routes
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(map[string]interface{}{
-			"statusCode": fiber.StatusOK,
-			"message":    "Welcome to Go-buks API",
-			"techs":      []string{"Fiber", "PostgreSQL"},
-		})
+		return c.SendString("OK")
 	})
 	app.Get("/docs/*", swagger.HandlerDefault)
 	routes.Routes(app)
